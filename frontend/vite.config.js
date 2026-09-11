@@ -5,5 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/', // Ensures assets are served from root (works on custom domains)
+  // Repo name so GitHub Pages project site (…/SAMPRIT/) resolves asset paths correctly.
+  // Change to '/' only if you deploy to a custom domain or a user/org site.
+  base: '/SAMPRIT/',
 })
