@@ -66,6 +66,7 @@ const Contact = () => {
           {
             from_name: `${formData.firstName} ${formData.lastName}`,
             from_email: formData.email,
+            reply_to: formData.email,
             subject,
             message: body,
             to_email: contactEmail,
@@ -73,7 +74,7 @@ const Contact = () => {
           { publicKey: emailjsConfig.publicKey }
         )
         .then(
-          (result) => {
+          () => {
             handleSuccess();
           },
           (reason) => {
@@ -97,6 +98,8 @@ const Contact = () => {
     formDataObj.append('message', body);
     formDataObj.append('_subject', subject);
     formDataObj.append('_replyto', formData.email);
+    // Disable the invisible reCAPTCHA so AJAX submissions aren't blocked
+    formDataObj.append('_captcha', 'false');
 
     fetch(`https://formsubmit.co/ajax/${contactEmail}`, {
       method: 'POST',
@@ -107,19 +110,40 @@ const Contact = () => {
         return res.json();
       })
       .then((data) => {
-        if (data && data.success === 'true') {
+        // FormSubmit returns { success: "true" } (string) on success and
+        // { success: "false", message: "..." } on failure.
+        // Accept both the string "true" and a boolean true, just in case.
+        const isSuccess =
+          data && (data.success === 'true' || data.success === true);
+
+        if (isSuccess) {
           handleSuccess();
         } else {
-          throw new Error(data && data.message ? data.message : 'FormSubmit error');
+          throw new Error(
+            (data && data.message) || 'FormSubmit submission error'
+          );
         }
       })
       .catch((err) => {
         console.error('FormSubmit send failed:', err);
-        // Fallback: open the visitor's email app with message pre-filled
+        // Be honest with the visitor: the automated send failed.
+        // Open their email client as a fallback so the message can
+        // still be delivered — but do NOT show a false "Message Sent!"
+        // because nothing has actually been sent yet.
+        setError(
+          "We couldn't send your message automatically right now. " +
+            'Your email app has been opened with the message ready — ' +
+            'please press send to complete it. If nothing opened, ' +
+            'you can email me directly at ' +
+            contactEmail +
+            '.'
+        );
         window.location.href =
           `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setIsSending(false);
-        setSent(true);
+        // Intentionally NOT calling setSent(true) here — the email has
+        // not actually left this device; it still needs to be sent by
+        // the visitor from their own email client.
       });
   };
 
@@ -129,13 +153,19 @@ const Contact = () => {
     setFormData({ firstName: '', lastName: '', email: '', message: '' });
   };
 
-  const handleFailure = () => {
+    const handleFailure = () => {
     setIsSending(false);
     setError(
       'There was a problem sending your message. Please try again or email me directly at ' +
         contactEmail +
         '.'
     );
+    // Fallback: open visitor's email client with their message pre-filled
+    const subject = encodeURIComponent('Portfolio Contact Form Message');
+    const body = encodeURIComponent(
+      `Name: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    window.open(`mailto:${contactEmail}?subject=${subject}&body=${body}`, '_blank');
   };
 
   return (
