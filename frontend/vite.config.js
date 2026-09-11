@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
+// Deployment base path:
+//   - Vercel / Netlify (deployed at root domain):  '/'  ← default
+//   - GitHub Pages project site:                   '/SAMPRIT/'  (set via BASE_PATH env in CI)
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Repo name so GitHub Pages project site (…/SAMPRIT/) resolves asset paths correctly.
-  // Change to '/' only if you deploy to a custom domain or a user/org site.
-  base: '/SAMPRIT/',
+  base: process.env.BASE_PATH || '/',
 })
