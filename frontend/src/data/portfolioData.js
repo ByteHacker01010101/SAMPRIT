@@ -400,6 +400,45 @@ export const footerContent = {
   credential: "B.Tech CSE (AI & ML)",
   copyright: `© ${new Date().getFullYear()} SAMPRIT | Built with React`,
 };
+// ---------------------------------------------------------------------------
+// MOOD DECK — the songs that play while I build (meta only).
+// The discography itself — whole albums, every track, played full-length
+// from Spotify’s own player — lives in the generated src/data/moodData.js
+// chunk, which the mood deck and the terminal’s `mood` command lazy-load on
+// demand. `count` is the track total for each tab; keep it in sync with
+// `node scripts/mood-gen.mjs`, which prints this exact tab list. The tab
+// ids below must match that output: bengali / hindi / english / focus.
+// ---------------------------------------------------------------------------
+export const moodMeta = [
+  {
+    id: "bengali",
+    label: "Bengali",
+    emoji: "🪔",
+    tagline: "Bangla band, adhunik and film — the hometown rotation.",
+    count: 598,
+  },
+  {
+    id: "hindi",
+    label: "Hindi",
+    emoji: "🎶",
+    tagline: "Film legends and modern voices from Kishore da to Arijit.",
+    count: 3003,
+  },
+  {
+    id: "english",
+    label: "English",
+    emoji: "🎸",
+    tagline: "Rock, pop and synth for the loud hours of a deadline.",
+    count: 3538,
+  },
+  {
+    id: "focus",
+    label: "Focus",
+    emoji: "🎧",
+    tagline: "No lyrics, all flow — the instrumental lists for deep work.",
+    count: 4,
+  },
+];
 
 // EmailJS Configuration
 // Will read directly from environment variables in Vite (starting with VITE_)

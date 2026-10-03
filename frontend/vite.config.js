@@ -8,5 +8,5 @@ import tailwindcss from '@tailwindcss/vite'
 //   - GitHub Pages project site:                   '/SAMPRIT/'  (set via BASE_PATH env in CI)
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: process.env.BASE_PATH || '/',
+  base: globalThis.process?.env?.BASE_PATH || '/',
 })

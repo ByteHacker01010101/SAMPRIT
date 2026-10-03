@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
+  const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Terminal', 'Mood', 'Contact'];
 
   const hireMeMailto = '#contact';
 
@@ -48,8 +49,9 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Right Side: CTA Button */}
-        <div className="hidden md:block">
+        {/* Right Side: Theme Toggle + CTA Button */}
+        <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <a 
             href={hireMeMailto}
             className="rounded-full border border-slate-300 bg-white px-5 py-2.5 font-bold text-slate-800 transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-900 hover:shadow-md"
@@ -59,7 +61,8 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Hamburger Menu Icon */}
-        <div className="md:hidden flex items-center">
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className="rounded-full p-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-600 md:hidden"

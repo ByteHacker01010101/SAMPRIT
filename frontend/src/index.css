@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --animate-float: float 6s ease-in-out infinite;
 
@@ -9,58 +11,309 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   THEME TOKENS
+   Light is the default identity. `html.dark` (set by the no-flash bootstrap
+   script in index.html) flips these tokens, so every colour in this file
+   adapts without touching the components.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2;
+  --bg-alt: #f4f3ef;
+  --bg-soft: #f8f7f4; /* footer + raised bands */
+  --fg: #20262b;
+  --fg-muted: rgb(32 38 43 / 0.62);
+  --fg-soft: rgb(32 38 43 / 0.42);
+  --ink-rgb: 32 38 43;
+  --line: rgb(32 38 43 / 0.14);
+  --line-strong: rgb(32 38 43 / 0.24);
+  --surface: rgb(255 255 255 / 0.72);
+  --surface-solid: #ffffff;
+  --surface-2: #ebe9e3;
+  --surface-soft: #f8f8f8;
+  --card: rgb(255 255 255 / 0.9);
+  --card-soft: #faf9f6;
+  --accent: #9a6c22;
+  --accent-rgb: 154 108 34;
+  --accent-soft: rgb(154 108 34 / 0.12);
+  --accent-line: rgb(154 108 34 / 0.32);
+  --backdrop-rgb: 15 23 42;
+  --panel: #20262b;
+  --viewer-border: rgb(255 255 255 / 0.5);
+  --resume-doc-bg: #d9d7d0;
+  /* Terminal palette stays constant in both themes (always-dark surface). */
+  --term-bg: #14120d;
+  --term-bg-soft: rgb(255 255 255 / 0.04);
+  --term-fg: #e9e3d6;
+  --term-dim: rgb(233 227 214 / 0.55);
+  --term-faint: rgb(233 227 214 / 0.32);
+  --term-line: rgb(233 227 214 / 0.12);
+  --term-accent: #d9a94f;
+  --term-success: #8fd9a8;
+  --term-error: #ff9c8a;
+  --term-info: #8fb6e8;
+}
+
+html.dark {
+  color-scheme: dark;
+  --bg: #16140f;
+  --bg-alt: #131110;
+  --bg-soft: #1a1712; /* footer stays a hair lighter than the page for separation */
+  --fg: #f1ede4;
+  --fg-muted: rgb(241 237 228 / 0.64);
+  --fg-soft: rgb(241 237 228 / 0.42);
+  --ink-rgb: 241 237 228;
+  --line: rgb(241 237 228 / 0.14);
+  --line-strong: rgb(241 237 228 / 0.26);
+  --surface: rgb(255 243 224 / 0.05);
+  --surface-solid: #201d16;
+  --surface-2: #262219;
+  --surface-soft: #221f18;
+  --card: rgb(38 33 25 / 0.92);
+  --card-soft: #1e1b15;
+  --accent: #d9a94f;
+  --accent-rgb: 217 169 79;
+  --accent-soft: rgb(217 169 79 / 0.16);
+  --accent-line: rgb(217 169 79 / 0.34);
+  --backdrop-rgb: 6 6 5;
+  --panel: #26231b;
+  --viewer-border: rgb(241 237 228 / 0.16);
+  --resume-doc-bg: #12100c;
+}
+
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg);
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #f6f5f2;
-  color: #20262b;
+  background-color: var(--bg);
+  color: var(--fg);
   font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
   overflow-x: hidden;
 }
 
-/* Keep the existing utility-driven components visually consistent with the new light identity. */
-body [class~="bg-[#0a0a0a]"] {
-  background-color: #f6f5f2;
+/* Keep the existing utility-driven components visually consistent with the theme identity. */
+body [class~="bg-[#0a0a0a]"],
+body [class~="bg-[#f6f5f2]"] {
+  background-color: var(--bg);
 }
 
-body [class~="bg-[#ff2a2a]"] {
-  background-color: #ebe9e3;
+body [class~="bg-[#ff2a2a]"],
+body [class~="bg-[#ebe9e3]"] {
+  background-color: var(--surface-2);
+}
+
+body [class~="bg-[#f8f8f8]"] {
+  background-color: var(--surface-soft);
+}
+
+body [class~="bg-[#f4f3ef]"] {
+  background-color: var(--bg-alt);
+}
+
+body [class~="border-[#f6f5f2]"] {
+  border-color: var(--bg);
 }
 
 body [class~="bg-[#111111]"] {
-  background-color: #20262b;
+  background-color: var(--panel);
+}
+
+body [class~="bg-[#f8f7f4]"] {
+  background-color: var(--bg-soft);
+}
+
+body [class~="bg-[#faf9f6]"] {
+  background-color: var(--card-soft);
+}
+
+body [class~="text-[#20262b]"] {
+  color: var(--fg);
 }
 
 body [class~="text-white"] {
-  color: #20262b;
+  color: var(--fg);
 }
 
 body [class*="text-white/"] {
-  color: rgb(32 38 43 / 0.62);
+  color: rgb(var(--ink-rgb) / 0.62);
 }
 
 body [class*="border-white/"] {
-  border-color: rgb(32 38 43 / 0.14);
+  border-color: rgb(var(--ink-rgb) / 0.14);
 }
 
 body [class*="bg-white/"] {
-  background-color: rgb(255 255 255 / 0.72);
+  background-color: var(--surface);
 }
 
 body [class*="text-red-"] {
-  color: #9a6c22;
+  color: var(--accent);
 }
 
 body [class*="border-red-"] {
-  border-color: rgb(154 108 34 / 0.32);
+  border-color: rgb(var(--accent-rgb) / 0.32);
 }
 
 body [class*="bg-red-"] {
-  background-color: rgb(154 108 34 / 0.12);
+  background-color: var(--accent-soft);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK THEME — remaps for the genuine Tailwind palette utilities the light
+   layer above leaves untouched. Everything is scoped to html.dark, so the
+   light rendering never changes.
+--------------------------------------------------------------------------- */
+html.dark body [class~="text-white"],
+html.dark body [class~="text-black"],
+html.dark body [class~="text-slate-900"],
+html.dark body [class~="text-slate-800"],
+html.dark body [class~="text-slate-700"],
+html.dark body [class~="text-gray-900"] {
+  color: var(--fg);
+}
+
+html.dark body [class*="text-white/"],
+html.dark body [class~="text-slate-600"],
+html.dark body [class~="text-slate-500"],
+html.dark body [class~="text-gray-600"],
+html.dark body [class~="text-gray-500"] {
+  color: var(--fg-muted);
+}
+
+html.dark body [class~="text-slate-400"],
+html.dark body [class~="text-gray-400"] {
+  color: var(--fg-soft);
+}
+
+html.dark body [class~="text-amber-700"],
+html.dark body [class~="text-amber-600"],
+html.dark body [class~="text-amber-500"] {
+  color: var(--accent);
+}
+
+html.dark body [class~="bg-white"] {
+  background-color: var(--surface-solid);
+}
+
+html.dark body [class*="bg-white/"] {
+  background-color: var(--surface);
+}
+
+html.dark body [class*="hover:bg-white"]:hover,
+html.dark body [class*="focus:bg-white"]:focus {
+  background-color: var(--surface-solid);
+}
+
+html.dark body input[class*="bg-white/"],
+html.dark body textarea[class*="bg-white/"] {
+  color: var(--fg);
+}
+
+html.dark body [class~="bg-slate-50"],
+html.dark body [class~="bg-slate-100"],
+html.dark body [class~="bg-gray-50"],
+html.dark body [class~="bg-gray-100"] {
+  background-color: var(--surface-2);
+}
+
+html.dark body [class~="bg-slate-200"] {
+  background-color: rgb(var(--ink-rgb) / 0.16);
+}
+
+html.dark body [class*="bg-slate-900/"] {
+  background-color: rgb(var(--ink-rgb) / 0.12);
+}
+
+html.dark body [class*="bg-gray-500/"] {
+  background-color: rgb(var(--ink-rgb) / 0.3);
+}
+
+html.dark body [class~="bg-slate-900"],
+html.dark body [class~="bg-gray-900"] {
+  background-color: var(--fg);
+}
+
+html.dark body [class~="bg-slate-900"][class~="text-white"],
+html.dark body [class~="bg-slate-900"] [class~="text-white"],
+html.dark body [class~="bg-gray-900"][class~="text-white"],
+html.dark body [class~="bg-gray-900"] [class~="text-white"] {
+  color: var(--bg);
+}
+
+html.dark body [class~="bg-amber-700"],
+html.dark body [class~="bg-amber-600"] {
+  background-color: var(--accent);
+}
+
+html.dark body [class~="bg-amber-700"][class~="text-white"],
+html.dark body [class~="bg-amber-700"] [class~="text-white"] {
+  color: var(--bg);
+}
+
+/* Amber badges keep their dark ink — text-[#20262b] now follows the theme,
+   but it still sits on a permanently bright amber fill. */
+html.dark body [class~="bg-amber-500"][class~="text-[#20262b]"],
+html.dark body [class~="bg-amber-600"][class~="text-[#20262b]"],
+html.dark body [class~="bg-amber-700"][class~="text-[#20262b]"] {
+  color: #221a08;
+}
+
+html.dark body [class*="border-slate-"],
+html.dark body [class*="border-gray-"],
+html.dark body [class*="border-black/"] {
+  border-color: var(--line);
+}
+
+html.dark body [class*="hover:border-slate-900"]:hover {
+  border-color: var(--fg);
+}
+
+html.dark body [class*="hover:text-slate-900"]:hover,
+html.dark body [class*="hover:text-slate-700"]:hover {
+  color: var(--fg);
+}
+
+html.dark body [class*="hover:text-amber-"]:hover {
+  color: var(--accent);
+}
+
+html.dark .group:hover [class*="group-hover:text-slate-900"] {
+  color: var(--fg);
+}
+
+html.dark body [class*="hover:bg-amber-700"][class*="hover:text-white"]:hover {
+  color: #fff;
+}
+
+html.dark body [class~="fill-[#0a0a0a]"] {
+  fill: var(--bg);
+}
+
+html.dark ::selection {
+  background: rgb(var(--accent-rgb) / 0.35);
+}
+
+/* Hero keeps its cinematic look identical in both themes — re-assert the pins
+   with matching specificity so the dark remaps above never touch it. */
+html.dark body .hero-surface [class*="bg-white/"] {
+  background-color: rgb(255 255 255 / 0.12);
+}
+
+html.dark body .hero-surface [class*="border-white/"] {
+  border-color: rgb(255 255 255 / 0.35);
+}
+
+html.dark body .hero-surface [class*="bg-red-"] {
+  background-color: #b58a42;
+}
+
+html.dark body .hero-surface [class~="bg-slate-900"] {
+  background-color: #0f172a;
 }
 
 body .hero-surface,
@@ -180,8 +433,8 @@ a, button {
   position: relative;
   overflow: clip;
   padding: 7rem 1.5rem 0;
-  color: #20262b;
-  background: #f6f5f2;
+  color: var(--fg);
+  background: var(--bg);
 }
 
 .beyond-code-inner {
@@ -200,9 +453,9 @@ a, button {
 .beyond-code-eyebrow {
   display: inline-flex;
   padding: 0.45rem 0.8rem;
-  border: 1px solid rgb(32 38 43 / 0.16);
+  border: 1px solid rgb(var(--ink-rgb) / 0.16);
   border-radius: 999px;
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.18em;
@@ -210,7 +463,7 @@ a, button {
 
 .beyond-code-header h2 {
   margin: 1.35rem 0 0.8rem;
-  color: #20262b;
+  color: var(--fg);
   font-size: clamp(2.4rem, 6vw, 5.2rem);
   font-weight: 900;
   line-height: 0.95;
@@ -219,7 +472,7 @@ a, button {
 .beyond-code-header p {
   max-width: 35rem;
   margin: 0 auto;
-  color: rgb(32 38 43 / 0.64);
+  color: rgb(var(--ink-rgb) / 0.64);
   font-size: 1rem;
   line-height: 1.7;
 }
@@ -258,17 +511,17 @@ a, button {
 .beyond-card {
   overflow: hidden;
   padding: clamp(1.5rem, 4vw, 3.4rem);
-  border: 1px solid rgb(32 38 43 / 0.14);
+  border: 1px solid rgb(var(--ink-rgb) / 0.14);
   border-radius: 1.5rem;
-  background: rgb(255 255 255 / 0.9);
-  box-shadow: 0 1.5rem 4rem rgb(32 38 43 / 0.1);
+  background: var(--card);
+  box-shadow: 0 1.5rem 4rem rgb(var(--ink-rgb) / 0.1);
   transform-origin: center center;
   transition: box-shadow 240ms ease;
   will-change: transform, opacity, filter;
 }
 
 .beyond-card-active {
-  box-shadow: 0 2rem 5rem rgb(32 38 43 / 0.17);
+  box-shadow: 0 2rem 5rem rgb(var(--ink-rgb) / 0.17);
 }
 
 .beyond-card-topline {
@@ -279,21 +532,21 @@ a, button {
 }
 
 .beyond-card-number {
-  color: #20262b;
+  color: var(--fg);
   font-size: clamp(1.4rem, 3vw, 2.3rem);
   font-weight: 900;
   letter-spacing: 0.02em;
 }
 
 .beyond-card-number i {
-  color: rgb(32 38 43 / 0.35);
+  color: rgb(var(--ink-rgb) / 0.35);
   font-size: 0.52em;
   font-style: normal;
 }
 
 .beyond-card-category,
 .beyond-card-kicker {
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.67rem;
   font-weight: 900;
   letter-spacing: 0.17em;
@@ -313,7 +566,7 @@ a, button {
 
 .beyond-card-copy h3 {
   margin: 0.8rem 0 1.15rem;
-  color: #20262b;
+  color: var(--fg);
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 900;
   line-height: 0.96;
@@ -322,7 +575,7 @@ a, button {
 .beyond-card-copy p {
   max-width: 35rem;
   margin: 0;
-  color: rgb(32 38 43 / 0.68);
+  color: rgb(var(--ink-rgb) / 0.68);
   font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   line-height: 1.7;
 }
@@ -336,9 +589,9 @@ a, button {
 
 .beyond-card-meta span {
   padding: 0.45rem 0.65rem;
-  border: 1px solid rgb(154 108 34 / 0.24);
+  border: 1px solid rgb(var(--accent-rgb) / 0.24);
   border-radius: 999px;
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -347,7 +600,7 @@ a, button {
 .beyond-card-link {
   display: inline-block;
   margin-top: 1.1rem;
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -361,9 +614,9 @@ a, button {
   aspect-ratio: 1;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgb(154 108 34 / 0.28);
+  border: 1px solid rgb(var(--accent-rgb) / 0.28);
   border-radius: 50%;
-  color: #9a6c22;
+  color: var(--accent);
   opacity: 0.78;
 }
 
@@ -376,7 +629,7 @@ a, button {
 
 .beyond-card-motif::before { width: 58%; height: 1px; background: currentColor; transform: rotate(45deg); }
 .beyond-card-motif::after { width: 58%; height: 1px; background: currentColor; transform: rotate(-45deg); }
-.beyond-card-motif span { width: 1.1rem; height: 1.1rem; border: 1px solid currentColor; border-radius: 50%; background: #fff; }
+.beyond-card-motif span { width: 1.1rem; height: 1.1rem; border: 1px solid currentColor; border-radius: 50%; background: var(--surface-solid); }
 .beyond-card-layers .beyond-card-motif { border-radius: 1rem; transform: rotate(-8deg); }
 .beyond-card-layout .beyond-card-motif { border-radius: 1rem; }
 .beyond-card-layout .beyond-card-motif span { width: 48%; height: 48%; border-radius: 0.3rem; }
@@ -391,16 +644,16 @@ a, button {
   display: flex;
   align-items: baseline;
   gap: 0.35rem;
-  color: #20262b;
+  color: var(--fg);
   font-size: 1rem;
   font-weight: 900;
   transform: translateY(-50%);
 }
 
-.beyond-progress i { color: rgb(32 38 43 / 0.28); font-style: normal; }
-.beyond-progress-label { position: absolute; top: 2.2rem; right: 0; color: rgb(32 38 43 / 0.42); font-size: 0.58rem; letter-spacing: 0.18em; }
-.beyond-scroll-cue { position: absolute; bottom: 2rem; left: 50%; color: rgb(32 38 43 / 0.42); font-size: 0.62rem; font-weight: 900; letter-spacing: 0.16em; transform: translateX(-50%); }
-.beyond-scroll-cue span { display: inline-block; width: 2rem; height: 1px; margin-right: 0.5rem; vertical-align: middle; background: #9a6c22; }
+.beyond-progress i { color: rgb(var(--ink-rgb) / 0.28); font-style: normal; }
+.beyond-progress-label { position: absolute; top: 2.2rem; right: 0; color: rgb(var(--ink-rgb) / 0.42); font-size: 0.58rem; letter-spacing: 0.18em; }
+.beyond-scroll-cue { position: absolute; bottom: 2rem; left: 50%; color: rgb(var(--ink-rgb) / 0.42); font-size: 0.62rem; font-weight: 900; letter-spacing: 0.16em; transform: translateX(-50%); }
+.beyond-scroll-cue span { display: inline-block; width: 2rem; height: 1px; margin-right: 0.5rem; vertical-align: middle; background: var(--accent); }
 
 .beyond-code-reduced { padding-bottom: 0; }
 .beyond-code-reduced .beyond-card { transition: none; }
@@ -438,9 +691,9 @@ a, button {
   position: relative;
   overflow: hidden;
   padding: 8rem 1.5rem 2rem;
-  color: #20262b;
-  background: #f6f5f2;
-  border-top: 1px solid rgb(32 38 43 / 0.12);
+  color: var(--fg);
+  background: var(--bg);
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.12);
 }
 
 .footer-premium::before {
@@ -450,8 +703,8 @@ a, button {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 50%;
-  background: #9a6c22;
-  box-shadow: 0 0 0 0.55rem rgb(154 108 34 / 0.1);
+  background: var(--accent);
+  box-shadow: 0 0 0 0.55rem rgb(var(--accent-rgb) / 0.1);
   content: '';
 }
 
@@ -468,7 +721,7 @@ a, button {
 }
 
 .footer-premium-eyebrow {
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.7rem;
   font-weight: 900;
   letter-spacing: 0.2em;
@@ -477,7 +730,7 @@ a, button {
 .footer-premium-intro h2 {
   max-width: 48rem;
   margin: 1.25rem 0 1rem;
-  color: #20262b;
+  color: var(--fg);
   font-size: clamp(2.8rem, 7vw, 7rem);
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -486,7 +739,7 @@ a, button {
 
 .footer-premium-intro p {
   max-width: 31rem;
-  color: rgb(32 38 43 / 0.64);
+  color: rgb(var(--ink-rgb) / 0.64);
   font-size: 1rem;
   line-height: 1.7;
 }
@@ -494,8 +747,8 @@ a, button {
 .footer-premium-form {
   margin-top: 3rem;
   padding: 1.25rem 0 2rem;
-  border-top: 1px solid rgb(32 38 43 / 0.14);
-  border-bottom: 1px solid rgb(32 38 43 / 0.14);
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.14);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.14);
 }
 
 .footer-premium-form-fields {
@@ -508,9 +761,9 @@ a, button {
 .footer-premium-form textarea {
   width: 100%;
   border: 0;
-  border-bottom: 1px solid rgb(32 38 43 / 0.2);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.2);
   padding: 0.85rem 0;
-  color: #20262b;
+  color: var(--fg);
   background: transparent;
   outline: none;
   font: inherit;
@@ -519,7 +772,7 @@ a, button {
 
 .footer-premium-form input:focus,
 .footer-premium-form textarea:focus {
-  border-color: #9a6c22;
+  border-color: var(--accent);
 }
 
 .footer-premium-form-submit {
@@ -540,11 +793,11 @@ a, button {
   align-items: center;
   gap: 0.7rem;
   min-height: 2.75rem;
-  border: 1px solid #20262b;
+  border: 1px solid var(--fg);
   border-radius: 999px;
   padding: 0.7rem 1rem;
-  color: #fff;
-  background: #20262b;
+  color: var(--bg);
+  background: var(--fg);
   cursor: pointer;
   font: inherit;
   font-size: 0.7rem;
@@ -555,8 +808,8 @@ a, button {
 }
 
 .footer-premium-form button:hover:not(:disabled) {
-  color: #20262b;
-  background: #fff;
+  color: var(--fg);
+  background: var(--surface-solid);
   transform: translateY(-0.15rem);
 }
 
@@ -567,7 +820,7 @@ a, button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 6rem;
-  border-top: 1px solid rgb(32 38 43 / 0.14);
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.14);
   animation: footerReveal 700ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -577,22 +830,22 @@ a, button {
   align-items: center;
   gap: 0.8rem;
   min-height: 6.5rem;
-  border-bottom: 1px solid rgb(32 38 43 / 0.14);
-  color: #20262b;
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.14);
+  color: var(--fg);
   text-decoration: none;
   transition: color 180ms ease, transform 180ms ease, border-color 180ms ease;
 }
 
 .footer-premium-link:hover {
-  color: #9a6c22;
-  border-color: #9a6c22;
+  color: var(--accent);
+  border-color: var(--accent);
   transform: translateY(-0.25rem);
 }
 
 .footer-premium-link-index {
   align-self: start;
   padding-top: 1.1rem;
-  color: rgb(32 38 43 / 0.38);
+  color: rgb(var(--ink-rgb) / 0.38);
   font-size: 0.62rem;
   font-weight: 900;
   letter-spacing: 0.1em;
@@ -603,14 +856,14 @@ a, button {
   width: 2.25rem;
   height: 2.25rem;
   place-items: center;
-  border: 1px solid rgb(32 38 43 / 0.16);
+  border: 1px solid rgb(var(--ink-rgb) / 0.16);
   border-radius: 50%;
   transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
 
 .footer-premium-link:hover .footer-premium-link-icon {
-  color: #fff;
-  background: #9a6c22;
+  color: var(--bg);
+  background: var(--accent);
   transform: rotate(-8deg) scale(1.06);
 }
 
@@ -625,17 +878,17 @@ a, button {
   align-items: center;
   gap: 1rem;
   padding-top: 2rem;
-  color: rgb(32 38 43 / 0.58);
+  color: rgb(var(--ink-rgb) / 0.58);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.footer-premium-brand { color: #20262b; font-size: 1.25rem; font-weight: 900; letter-spacing: -0.04em; }
-.footer-premium-brand span { color: #9a6c22; }
-.footer-premium-top { justify-self: end; border: 0; color: #9a6c22; background: transparent; cursor: pointer; font: inherit; text-transform: inherit; transition: transform 180ms ease, color 180ms ease; }
-.footer-premium-top:hover { color: #20262b; transform: translateY(-0.15rem); }
+.footer-premium-brand { color: var(--fg); font-size: 1.25rem; font-weight: 900; letter-spacing: -0.04em; }
+.footer-premium-brand span { color: var(--accent); }
+.footer-premium-top { justify-self: end; border: 0; color: var(--accent); background: transparent; cursor: pointer; font: inherit; text-transform: inherit; transition: transform 180ms ease, color 180ms ease; }
+.footer-premium-top:hover { color: var(--fg); transform: translateY(-0.15rem); }
 
 @media (max-width: 700px) {
   .footer-premium { padding: 6rem 1rem 1.5rem; }
@@ -675,7 +928,7 @@ a, button {
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: rgb(15 23 42 / 0.72);
+  background: rgb(var(--backdrop-rgb) / 0.72);
   backdrop-filter: blur(10px);
   animation: resumeViewerEnter 180ms ease-out both;
 }
@@ -686,10 +939,10 @@ a, button {
   height: min(94vh, 58rem);
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.5);
+  border: 1px solid var(--viewer-border);
   border-radius: 1.25rem;
-  background: #f6f5f2;
-  box-shadow: 0 2rem 6rem rgb(15 23 42 / 0.35);
+  background: var(--bg);
+  box-shadow: 0 2rem 6rem rgb(var(--backdrop-rgb) / 0.35);
 }
 
 .resume-viewer-toolbar {
@@ -699,12 +952,12 @@ a, button {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1rem 0.75rem 1.25rem;
-  border-bottom: 1px solid rgb(32 38 43 / 0.12);
-  color: #20262b;
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.12);
+  color: var(--fg);
 }
 
 .resume-viewer-title {
-  color: #9a6c22;
+  color: var(--accent);
   font-size: 0.7rem;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -722,10 +975,10 @@ a, button {
   min-height: 2.25rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(32 38 43 / 0.16);
+  border: 1px solid rgb(var(--ink-rgb) / 0.16);
   border-radius: 999px;
   padding: 0.45rem 0.8rem;
-  color: #20262b;
+  color: var(--fg);
   font-size: 0.7rem;
   font-weight: 800;
   text-decoration: none;
@@ -736,9 +989,9 @@ a, button {
 
 .resume-viewer-action:hover,
 .resume-viewer-close:hover {
-  border-color: #9a6c22;
-  color: #fff;
-  background: #9a6c22;
+  border-color: var(--accent);
+  color: var(--bg);
+  background: var(--accent);
 }
 
 .resume-viewer-action-disabled {
@@ -756,7 +1009,7 @@ a, button {
 .resume-viewer-document {
   min-height: 0;
   flex: 1;
-  background: #d9d7d0;
+  background: var(--resume-doc-bg);
 }
 
 .resume-viewer-document iframe {
@@ -776,12 +1029,12 @@ a, button {
   justify-content: center;
   gap: 0.75rem;
   padding: 2rem;
-  color: rgb(32 38 43 / 0.65);
+  color: rgb(var(--ink-rgb) / 0.65);
   text-align: center;
 }
 
-.resume-viewer-unavailable strong { color: #20262b; font-size: 1.1rem; }
-.resume-viewer-unavailable code { color: #9a6c22; font-size: 0.8rem; }
+.resume-viewer-unavailable strong { color: var(--fg); font-size: 1.1rem; }
+.resume-viewer-unavailable code { color: var(--accent); font-size: 0.8rem; }
 
 @keyframes resumeViewerEnter {
   from { opacity: 0; }
@@ -795,3 +1048,705 @@ a, button {
   .resume-viewer-title { font-size: 0.6rem; }
   .resume-viewer-action { padding-inline: 0.55rem; font-size: 0.62rem; }
 }
+
+/* ---------------------------------------------------------------------------
+   THEME TRANSITION
+   Applied to <html> for ~400ms while the theme swaps so the surface colours
+   ease instead of snapping. Skipped entirely for reduced-motion users.
+--------------------------------------------------------------------------- */
+.theme-transition,
+.theme-transition body,
+.theme-transition body * {
+  transition: background-color 320ms ease, color 320ms ease,
+    border-color 320ms ease, fill 320ms ease, stroke 320ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition,
+  .theme-transition body,
+  .theme-transition body * {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   INTERACTIVE TERMINAL
+   The shell keeps its own always-dark palette (the --term-* tokens) so it
+   reads like a real terminal in both site themes.
+--------------------------------------------------------------------------- */
+.terminal-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--ink-rgb) / 0.14);
+  border-radius: 1.25rem;
+  background: var(--term-bg);
+  box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.32);
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--term-line);
+  background: var(--term-bg-soft);
+}
+
+.terminal-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+}
+
+.terminal-dot-red { background: #ff5f57; }
+.terminal-dot-yellow { background: #febc2e; }
+.terminal-dot-green { background: #28c840; }
+
+.terminal-title {
+  margin-left: 0.5rem;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.terminal-badge {
+  margin-left: auto;
+  border: 1px solid var(--term-line);
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+
+.terminal-screen {
+  height: 22rem;
+  overflow-y: auto;
+  padding: 1.1rem 1.15rem 1.35rem;
+  color: var(--term-fg);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  cursor: text;
+  scrollbar-width: thin;
+  scrollbar-color: var(--term-faint) transparent;
+}
+
+.terminal-screen::-webkit-scrollbar { width: 8px; }
+.terminal-screen::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--term-faint);
+}
+.terminal-screen::-webkit-scrollbar-track { background: transparent; }
+
+.terminal-line { white-space: pre-wrap; overflow-wrap: anywhere; }
+.terminal-line-command { color: #ffffff; }
+.terminal-line-accent { color: var(--term-accent); }
+.terminal-line-muted { color: var(--term-dim); }
+.terminal-line-success { color: var(--term-success); }
+.terminal-line-error { color: var(--term-error); }
+.terminal-line-info { color: var(--term-info); }
+
+.terminal-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.terminal-prompt {
+  color: var(--term-accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.terminal-prompt-user { color: var(--term-success); }
+
+.terminal-input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--term-fg);
+  font: inherit;
+  outline: none;
+  caret-color: var(--term-accent);
+}
+
+.terminal-input::placeholder { color: var(--term-faint); }
+
+.terminal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.15rem 1.15rem;
+  border-top: 1px solid var(--term-line);
+}
+
+.terminal-chip {
+  border: 1px solid var(--term-line);
+  border-radius: 999px;
+  padding: 0.42rem 0.85rem;
+  background: transparent;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease;
+}
+
+.terminal-chip:hover,
+.terminal-chip:focus-visible {
+  border-color: var(--term-accent);
+  color: var(--term-accent);
+  background: rgb(217 169 79 / 0.08);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .terminal-screen { height: 19rem; padding: 0.95rem 0.9rem 1.15rem; font-size: 0.78rem; }
+  .terminal-input { font-size: 1rem; }
+  .terminal-title { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   MY MOOD — song deck
+   Spotify embeds are always dark and cannot be
+   re-themed, so the deck keeps a constant surface from the --term-* tokens
+   (the same approach as the terminal). The mood tabs sit on the page
+   background and therefore use the theme-remapped Tailwind utilities.
+--------------------------------------------------------------------------- */
+.mood-deck {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--ink-rgb) / 0.14);
+  border-radius: 1.5rem;
+  background: var(--term-bg);
+  box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.32);
+}
+
+.mood-deck-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--term-line);
+  background: var(--term-bg-soft);
+}
+
+.mood-deck-dot { width: 0.7rem; height: 0.7rem; flex: 0 0 auto; border-radius: 999px; }
+.mood-deck-dot-red { background: #ff5f57; }
+.mood-deck-dot-yellow { background: #febc2e; }
+.mood-deck-dot-green { background: #28c840; }
+
+.mood-deck-title {
+  margin-left: 0.5rem;
+  overflow: hidden;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mood-deck-badge,
+.mood-stop {
+  margin-left: auto;
+  flex: 0 0 auto;
+  border: 1px solid var(--term-line);
+  border-radius: 999px;
+  padding: 0.24rem 0.62rem;
+  background: transparent;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.mood-stop {
+  color: var(--term-dim);
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease, background-color 180ms ease;
+}
+
+.mood-stop:hover,
+.mood-stop:focus-visible {
+  border-color: var(--term-error);
+  background: rgb(255 156 138 / 0.12);
+  color: var(--term-error);
+  outline: none;
+}
+
+.mood-stage { padding: 1rem; }
+
+.mood-skeleton {
+  height: 12rem;
+  border-radius: 1rem;
+  background: var(--term-bg-soft);
+}
+
+.mood-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--term-bg-soft);
+}
+
+/* The facade renders first — no third-party script, cookie or banner loads
+   until the visitor presses play. */
+.mood-facade {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1.1rem;
+  border: 1px dashed var(--term-line);
+  border-radius: 1rem;
+  padding: 1.1rem;
+  background: linear-gradient(140deg, rgb(217 169 79 / 0.1), transparent 58%);
+  color: var(--term-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
+}
+
+.mood-facade:hover,
+.mood-facade:focus-visible {
+  border-color: var(--term-accent);
+  background-color: rgb(217 169 79 / 0.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.mood-facade-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--term-line);
+  border-radius: 1.1rem;
+  background: radial-gradient(circle at 32% 26%, rgb(217 169 79 / 0.3), transparent 64%);
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.mood-facade-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.mood-facade-eyebrow {
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.mood-facade-title { color: var(--term-fg); font-size: 1.3rem; font-weight: 900; letter-spacing: -0.01em; }
+.mood-facade-note { color: var(--term-dim); font-size: 0.85rem; font-weight: 500; line-height: 1.6; }
+
+.mood-facade-play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--term-accent);
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  background: rgb(217 169 79 / 0.14);
+  color: var(--term-accent);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mood-deck-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1rem 1rem;
+}
+
+.mood-deck-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--term-faint);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.mood-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--term-line);
+  border-radius: 999px;
+  color: var(--term-dim);
+}
+
+.mood-brand svg { width: 0.85rem; height: 0.85rem; fill: currentColor; }
+
+.mood-fallback {
+  margin-left: auto;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.mood-fallback:hover,
+.mood-fallback:focus-visible { color: var(--term-accent); outline: none; }
+
+@media (min-width: 640px) {
+  .mood-stage { padding: 1.15rem; }
+  .mood-facade { flex-direction: row; align-items: center; }
+  .mood-deck-foot { padding: 0 1.15rem 1.15rem; }
+}
+
+@media (max-width: 640px) {
+  .mood-deck-title { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-facade,
+  .mood-stop,
+  .mood-fallback { transition: none; }
+  .mood-facade:hover,
+  .mood-facade:focus-visible { transform: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOOD DECK — song rail + transport
+   One player at a time: the rail lists every song of the active tab and the
+   stage plays whichever one is cued. Cueing another song unmounts the iframe,
+   which is what stops the audio. Same constant --term-* surface as above.
+--------------------------------------------------------------------------- */
+.mood-body {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.mood-rail { min-width: 0; }
+
+.mood-rail-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 0.15rem 0.6rem;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mood-rail-head > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mood-rail-count { flex: 0 0 auto; color: var(--term-dim); }
+
+.mood-tracks {
+  max-height: 19rem;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid var(--term-line);
+  border-radius: 1rem;
+  background: var(--term-bg-soft);
+  scrollbar-color: var(--term-line) transparent;
+  scrollbar-width: thin;
+}
+
+.mood-tracks::-webkit-scrollbar { width: 0.5rem; }
+.mood-tracks::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--term-line); }
+
+.mood-artist-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--term-line);
+  padding: 0.5rem 0.8rem 0.38rem;
+  background: rgb(217 169 79 / 0.06);
+}
+
+.mood-artist-link {
+  overflow: hidden;
+  color: var(--term-accent);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mood-artist-link:hover,
+.mood-artist-link:focus-visible { text-decoration: underline; outline: none; }
+
+.mood-artist-count {
+  flex: 0 0 auto;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Artist row is now a disclosure: caret + name toggle the discography, the
+   count and the Spotify link sit beside it. */
+.mood-artist-toggle {
+  display: inline-flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.35rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--term-accent);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mood-artist-toggle:hover .mood-artist-name,
+.mood-artist-toggle:focus-visible .mood-artist-name { text-decoration: underline; }
+.mood-artist-toggle:focus-visible { outline: none; }
+
+.mood-artist-caret { flex: 0 0 auto; }
+
+.mood-artist-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Album subheader inside an expanded artist. */
+.mood-album-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--term-line);
+  padding: 0.4rem 0.8rem 0.32rem 1.55rem;
+  background: rgb(217 169 79 / 0.03);
+}
+
+.mood-album-title {
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mood-album-meta {
+  flex: 0 0 auto;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mood-album-link {
+  flex: 0 0 auto;
+  color: var(--term-dim);
+  font-size: 0.66rem;
+  text-decoration: none;
+}
+
+.mood-album-link:hover,
+.mood-album-link:focus-visible { color: var(--term-accent); outline: none; }
+
+/* Track rows carry the lyrics link next to the button, so the divider moves
+   up to the li. */
+.mood-track-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--term-line);
+}
+
+.mood-track-row .mood-track { flex: 1 1 auto; min-width: 0; border-bottom: 0; }
+.mood-track-row:last-child { border-bottom: 0; }
+
+.mood-lyrics {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 0.7rem;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.mood-lyrics:hover,
+.mood-lyrics:focus-visible { color: var(--term-accent); outline: none; }
+
+
+.mood-track {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.7rem;
+  border: 0;
+  border-bottom: 1px solid var(--term-line);
+  padding: 0.62rem 0.8rem;
+  background: transparent;
+  color: var(--term-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.mood-tracks li:last-child .mood-track { border-bottom: 0; }
+
+.mood-track:hover,
+.mood-track:focus-visible { background: rgb(217 169 79 / 0.1); outline: none; }
+.mood-track.is-current { background: rgb(217 169 79 / 0.14); }
+
+.mood-track-index {
+  flex: 0 0 auto;
+  width: 1.7rem;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mood-track-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 0.12rem; }
+
+.mood-track-title {
+  overflow: hidden;
+  color: var(--term-fg);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mood-track-artist {
+  overflow: hidden;
+  color: var(--term-dim);
+  font-size: 0.7rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mood-track-state {
+  flex: 0 0 auto;
+  color: var(--term-accent);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mood-track-state.is-idle { color: var(--term-faint); }
+
+.mood-body .mood-stage { padding: 0; }
+
+.mood-transport {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem 0.9rem;
+}
+
+.mood-transport-btn {
+  border: 1px solid var(--term-line);
+  border-radius: 999px;
+  padding: 0.3rem 0.72rem;
+  background: transparent;
+  color: var(--term-dim);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.mood-transport-btn:hover,
+.mood-transport-btn:focus-visible {
+  border-color: var(--term-accent);
+  color: var(--term-accent);
+  outline: none;
+}
+
+.mood-transport-count {
+  margin-left: auto;
+  color: var(--term-faint);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+}
+
+@media (min-width: 1024px) {
+  .mood-body {
+    grid-template-columns: minmax(16rem, 21rem) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .mood-tracks { max-height: 23rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mood-track,
+  .mood-transport-btn { transition: none; }
+}
+
